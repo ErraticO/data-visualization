@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>ECharts</title>
+	<script src="static/js/echarts.min.js?v1.01"></script>
+</head>
+<body>
+	<div id="main" style="width:100%;min-width:300px;height:100%;min-height:900px"></div>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main'));
+		var option;
+		var data= {{constructionSpecificity|safe}};
+
+		option = {
+			backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
+				offset: 0,
+				color: '#f7f8fa'
+			}, {
+				offset: 1,
+				color: '#cdd0d5'
+			}]),
+			title: {
+				text: 'Evaluate'
+			},
+			legend: {
+				top: 10,
+				data: ['Low-evaluation','General-evaluation', 'High-estimation']
+			},
+			 toolbox: {
+				show: true,
+				feature: {
+					dataZoom: {
+					},
+					dataView: {readOnly: false},
+					restore: {},
+					saveAsImage: {}
+				}
+			},
+			grid: {
+				top: 80,
+				bottom: 90
+			},
+			xAxis: {
+				type: 'value',
+				name: 'now',
+				nameGap: 16,
+				nameLocation: 'center',
+				nameTextStyle: {
+					color: 'black',
+					fontSize: 20
+				},
+				splitLine: {
+					lineStyle: {
+						type: 'dashed'
+					}
+				}
+			},
+			yAxis: {
+				type: 'value',
+				name: 'improve',
+				nameGap: 16,
+				nameTextStyle: {
+					color: 'black',
+					fontSize: 20
+				},
+				splitLine: {
+					lineStyle: {
+						type: 'dashed'
+					}
+				},
+				scale: false
+			},
+			dataZoom: [
+				{
+					type: 'slider',
+					show: true,
+					xAxisIndex: [0],
+					start: 0,
+					end: 100
+				},
+				{
+					type: 'slider',
+					show: true,
+					yAxisIndex: [0],
+					left: '93%',
+					start: 0,
+					end: 100
+				},
+				{
+					type: 'inside',
+					xAxisIndex: [0],
+					start: 0,
+					end: 100
+				},
+				{
+					type: 'inside',
+					yAxisIndex: [0],
+					start: 0,
+					end: 100
+				}
+			],
+			series: [{
+				name: 'Low-evaluation',
+				data: data[0],
+				type: 'scatter',
+				symbolSize: function(data) {
+					return Math.sqrt(data[2])/5;
+				},
+				label: {
+					emphasis: {
+						show: true,
+						formatter: function(param) {
+							return param.data[3];
+						},
+						position: 'insideBottomLeft',
+						color: 'black'
+					}
+				},
+				markLine: {
+					lineStyle: {
+						type: 'dashed',
+						color: '#FFA500'
+					},
+					data: [
+						{ xAxis: 15.01 },
+						{ xAxis: 10.00 },
+						{ yAxis: 0.02 },
+						{ yAxis: -0.26 },
+					]
+				},
+				markArea: {
+					silent: true,
+					itemStyle:{
+					color: '#B0E0E6'
+					},
+					data: [[{
+						name: '',
+						xAxis: 15.01,
+						yAxis: 0.02
+					}, {
+						xAxis: 20,
+						yAxis: 20
+					}]]
+				},
+				itemStyle: {
+					normal: {
+						shadowBlur: 10,
+						shadowColor: 'rgba(120, 36, 50, 0.5)',
+						shadowOffsetY: 5,
+						color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+							offset: 0,
+							color: 'rgb(251, 118, 123)'
+						}, {
+							offset: 1,
+							color: 'rgb(204, 46, 72)'
+						}])
+					}
+				}
+			}, {
+				name: 'General-evaluation',
+				data: data[1],
+				type: 'scatter',
+				symbolSize: function(data) {
+					return Math.sqrt(data[2]) / 5;
+				},
+				label: {
+					emphasis: {
+						show: true,
+						formatter: function(param) {
+							return param.data[3];
+						},
+						position: 'top'
+					}
+				},
+				markArea: {
+					silent: true,
+					itemStyle:{
+					color: 'pink'
+					},
+					data: [[{
+						name: '',
+						xAxis: 0,
+						yAxis: -20
+					}, {
+						xAxis: 10,
+						yAxis: -0.26
+					}]]
+				},
+				itemStyle: {
+					normal: {
+						shadowBlur: 10,
+						shadowColor: 'rgba(25, 100, 150, 0.5)',
+						shadowOffsetY: 5,
+						color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+							offset: 0,
+							color: 'rgb(129, 227, 238)'
+						}, {
+							offset: 1,
+							color: 'rgb(25, 183, 207)'
+						}])
+					}
+				}
+			},{
+				name: 'High-estimation',
+				data: data[2],
+				type: 'scatter',
+				symbolSize: function(data) {
+					return Math.sqrt(data[2]) / 5;
+				},
+				label: {
+					emphasis: {
+						show: true,
+						formatter: function(param) {
+							return param.data[3];
+						},
+						position: 'top'
+					}
+				},
+				itemStyle: {
+					normal: {
+						shadowBlur: 10,
+						shadowColor: 'rgba(120, 36, 50, 0.5)',
+						shadowOffsetY: 5,
+						color: new echarts.graphic.RadialGradient(0.4, 0.3, 1, [{
+							offset: 0,
+							color: 'rgb(60,179,113)'
+						}, {
+							offset: 1,
+							color: 'rgb(152,251,152)'
+						}])
+					}
+				}
+			},]
+		};
+		myChart.setOption(option);
+		window.onresize = myChart.resize
+	</script>
+</body>
+
+</html>
